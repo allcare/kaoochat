@@ -1,0 +1,46 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set password "rCFvu8Hb"
+set server "oclaw.kaoohi.com"
+set user "root"
+
+spawn ssh -o StrictHostKeyChecking=no $user@$server
+
+expect {
+    timeout {
+        puts "\n✗ Connection timeout"
+        exit 1
+    }
+    "password:" {
+        send "$password\r"
+        exp_continue
+    }
+    "Password:" {
+        send "$password\r"
+        exp_continue
+    }
+    -re "root@.*#" {
+        puts "\n✓ Connected successfully!"
+        send "whoami && hostname && pwd\r"
+        expect -re "root@.*#"
+        send "cd /opt/openclaw && ls -la | head -10\r"
+        expect -re "root@.*#"
+        send "docker-compose ps\r"
+        expect -re "root@.*#"
+        send "exit\r"
+    }
+    -re "root@.*\\\$" {
+        puts "\n✓ Connected successfully!"
+        send "whoami && hostname && pwd\r"
+        expect -re "root@.*\\\$"
+        send "cd /opt/openclaw && ls -la | head -10\r"
+        expect -re "root@.*\\\$"
+        send "docker-compose ps\r"
+        expect -re "root@.*\\\$"
+        send "exit\r"
+    }
+}
+
+expect eof
+puts "\n✓ SSH test complete"

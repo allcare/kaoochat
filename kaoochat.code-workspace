@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../kaobot"
+		},
+		{
+			"path": "../karkajou"
+		},
+		{
+			"path": "../kaoohi"
+		}
+	],
+	"settings": {}
+}
